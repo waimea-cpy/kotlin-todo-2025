@@ -9,9 +9,9 @@ fun main() {
 
     tasks[2].markAsDone()
 
-    println("======================")
-    println(" To Do, You Big Loser")
-    println("======================")
+    println("=====================")
+    println("  AWESOME TASK LIST")
+    println("=====================")
     println()
 
     while(true) {
@@ -19,17 +19,22 @@ fun main() {
         when(getUserAction()) {
             'x' -> break
             'n' -> tasks.add(getNewTask())
-            'd' -> println("DONE")
+            'd' -> getTask(tasks).markAsDone()
         }
     }
 }
 
+/**
+ * Show a list of options to the user
+ * a return their selected option
+ */
 fun getUserAction(): Char {
     while (true) {
         // Show the menu
-        println("[N]ew task")
-        println("Toggle [d]one")
-        println("E[x]it")
+        println("MENU:")
+        println(" [N]ew task")
+        println(" Mark task [d]one")
+        println(" E[x]it")
         print("> ")
 
         // Get input
@@ -37,6 +42,7 @@ fun getUserAction(): Char {
 
         // Did they type something?
         if (action.isNotEmpty()) {
+            // Yes, so pass back the first char
             return action.first()
         }
     }
@@ -44,7 +50,39 @@ fun getUserAction(): Char {
 }
 
 
+/**
+ * Get a specific task from the task list
+ * returning the selected Task
+ */
+fun getTask(tasks: MutableList<Task>): Task {
+    println("Select a task...")
+    // Show the tasks, numbered 1...
+    var num = 1
+    for(task in tasks) {
+        print("$num: ")
+        print("${task.priority} ")
+        println(task.name)
+        num++
+    }
 
+    // Get the number of a task from user
+    print("Pick a task: ")
+    val taskNum = readln().toInt() - 1  // Sub 1 since index 0...
+
+    // Return the selected Task object
+    val selectedTask = tasks[taskNum]
+    return selectedTask
+}
+
+
+
+
+
+/**
+ * Get details of a new task from the
+ * user, create a Task object, and
+ * return it
+ */
 fun getNewTask(): Task {
     println("New task")
 
@@ -58,13 +96,18 @@ fun getNewTask(): Task {
 }
 
 
-
+/**
+ * Show a list of tasks
+ */
 fun showTasks(tasks: MutableList<Task>) {
+    println("Tasks:")
     for(task in tasks) {
+        print(" ")
         print(if(task.done) "[X]" else "[ ]")
         print(" ${task.priority} ")
         println(task.name)
     }
+    println()
 }
 
 
